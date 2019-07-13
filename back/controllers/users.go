@@ -2,21 +2,44 @@ package controllers
 
 import (
 	"log"
+	"io"
+	"strings"
 	"net/http"
+	"encoding/json"
+	"../structs"
+	"../utils"
 )
 
-func CreateUser(req *http.Request) {
-	var username string
-	var password string
-	username = req.FormValue("username")
-	password = req.FormValue("password")
+func CreateUser(req *http.Request) bool {
+	err := req.ParseForm()
 
-	log.Println(username, password)
+	if err != nil {
+		log.Fatal("Parse form error")
+	}
 
-	/*if len(username) > 0 && len(password) > 0 {
-		log.Println("Yes")
-	} else {
-		panic("Not all parameters")
-	}*/
+	v := req.Form
 
+	status := false
+
+	// {"{key_is_json_from_client":null}
+	for key := range v {
+		var user structs.User
+		dec := json.NewDecoder(strings.NewReader(key))
+
+		if err := dec.Decode(&user); err == io.EOF {
+			break
+		} else if err != nil {
+			log.Fatal(err)
+		}
+
+		log.Println(user.Username, user.Password)
+
+		query := "INSERT INTO users (username, password) VALUES ('" + user.Username + "', '" + user.Password + "')"
+
+		status = utils.RunQuery(query)
+
+	}
+
+
+	return status
 }

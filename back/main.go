@@ -5,6 +5,7 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/cors"
 	"net/http"
+	"./utils"
 )
 
 func main() {
@@ -13,7 +14,7 @@ func main() {
 	m.Use(cors.Allow(&cors.Options{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"POST", "GET", "DELETE", "PUT", "PATCH"},
-		AllowHeaders:     []string{"Origin"},
+		AllowHeaders: []string{"X-Auth-Key", "X-Auth-Secret", "Content-Type"},
 	}))
 
 	m.Get("/", func() string {
@@ -22,11 +23,10 @@ func main() {
 
 	m.Group("/users", func(r martini.Router) {
 		r.Post("/add", func(params martini.Params, req *http.Request, res http.ResponseWriter) string {
-			controllers.CreateUser(req)
+			var status bool
+			status = controllers.CreateUser(req)
 
-			res.WriteHeader(200)
-
-			return "OK"
+			return utils.SendStatus(status)
 		})
 	})
 
