@@ -6,6 +6,7 @@ import (
 	"github.com/martini-contrib/cors"
 	"net/http"
 	"./utils"
+	"./structs"
 )
 
 func main() {
@@ -27,6 +28,17 @@ func main() {
 			status = controllers.CreateUser(req)
 
 			return utils.SendStatus(status)
+		})
+		r.Post("/auth", func(params martini.Params, req *http.Request, res http.ResponseWriter) string {
+			var user structs.User
+			user = controllers.AuthUser(req)
+
+			if user.Id > 0 {
+				return "{\"result\":\"" + user.Id + "\"}"
+			} else {
+				return utils.SendStatus(false)
+			}
+
 		})
 	})
 
