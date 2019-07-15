@@ -26,6 +26,19 @@ export default new Vuex.Store({
       }).catch((error) => {
         console.error(error)
       })
+    },
+    authUser: function (context, payload) {
+      axios.post(
+        apiUrl + '/users/auth', payload, {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }
+      ).then((response) => {
+        console.log(response)
+      }).catch((error) => {
+        console.error(error)
+      })
     }
   }
 })

@@ -2,14 +2,19 @@
   <v-app>
     <v-toolbar app>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn flat>
+        <v-btn>
           <router-link to="/">
             Home
           </router-link>
         </v-btn>
         <v-btn flat v-if="!logged">
+          <router-link to="/login">
+            Log in
+          </router-link>
+        </v-btn>
+        <v-btn flat v-if="!logged">
           <router-link to="/registration">
-            Registration
+            Sign up
           </router-link>
         </v-btn>
       </v-toolbar-items>

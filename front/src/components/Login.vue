@@ -1,12 +1,12 @@
 <template>
-  <AuthForm v-bind:is_auth="false"/>
+  <AuthForm v-bind:is_auth="true"/>
 </template>
 
 <script>
 import AuthForm from './AuthForm'
 
 export default {
-  name: 'Registration',
+  name: 'Login',
   components: {
     AuthForm
   }
