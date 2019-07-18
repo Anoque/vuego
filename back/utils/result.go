@@ -13,6 +13,10 @@ func SendStatus(status bool) string {
 	}
 }
 
+func GetResultTemplate(str string) string {
+	return "{\"result\":" + str + "}"
+}
+
 func GetResultTest(obj []structs.TestStruct) string {
 	res, err := json.Marshal(obj)
 
@@ -21,4 +25,14 @@ func GetResultTest(obj []structs.TestStruct) string {
 	}
 
 	return string(res)
+}
+
+func GetResultSession(obj structs.Session) string {
+	res, err := json.Marshal(obj)
+
+	if err != nil {
+		panic("Json error")
+	}
+
+	return GetResultTemplate(string(res))
 }

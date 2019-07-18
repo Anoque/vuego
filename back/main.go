@@ -4,6 +4,7 @@ import (
 	"./controllers"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/cors"
+	"log"
 	"net/http"
 	"./utils"
 	"./structs"
@@ -30,17 +31,21 @@ func main() {
 			return utils.SendStatus(status)
 		})
 		r.Post("/auth", func(params martini.Params, req *http.Request, res http.ResponseWriter) string {
-			var user structs.User
-			user = controllers.AuthUser(req)
+			var Session structs.Session
+			Session = controllers.AuthUser(req)
 
-			if user.Id > 0 {
-				return "{\"result\":\"" + user.Id + "\"}"
+			if len(Session.Session) > 0 {
+				return utils.GetResultSession(Session)
 			} else {
 				return utils.SendStatus(false)
 			}
-
 		})
 	})
 
 	m.Run()
+}
+
+func checkSession() {
+	req := &http.Request{}
+	log.Println(req)
 }

@@ -40,13 +40,14 @@ func CreateUser(req *http.Request) bool {
 	return status
 }
 
-func AuthUser(req *http.Request) structs.User {
+func AuthUser(req *http.Request) structs.Session {
 	err := req.ParseForm()
 	if err != nil {
 		log.Fatal("Parse form error")
 	}
 	v := req.Form
 	User := structs.User{}
+	Session := structs.Session{}
 
 	for key := range v {
 		var user structs.User
@@ -65,6 +66,8 @@ func AuthUser(req *http.Request) structs.User {
 		if status {
 			User = utils.GetUser(user.Username, user.Password)
 			log.Println(User.Id)
+			Session = CreateSession(User.Id)
+			log.Println(Session.Session)
 		} else {
 			log.Println("User not found")
 		}
@@ -72,6 +75,6 @@ func AuthUser(req *http.Request) structs.User {
 		break
 	}
 
-	return User
+	return Session
 }
 
