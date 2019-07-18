@@ -29,6 +29,29 @@
 </template>
 
 <script>
+/*function sendRequest(url, data) {
+  axios.post(
+    apiUrl + url, data, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }
+  ).then((response) => {
+    console.log("Response: ", response)
+
+    if (typeof response.error !== 'undefined') {
+      console.error(response.error)
+
+      return null
+    } else if (typeof response.result !== 'undefined') {
+      return response.result
+    }
+  }).catch((error) => {
+    console.error(error)
+
+    return null
+  })
+}*/
 
 export default {
   name: 'App',
