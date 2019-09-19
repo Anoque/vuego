@@ -6,20 +6,21 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"log"
 )
 
 func GetTests() string {
 	db, err := sql.Open("mysql", "hello:root@/checkout")
 
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	defer db.Close()
 
-	result, err := db.Query("SELECT * FROM test LIMIT 10")
+	result, err := db.Query("SELECT * FROM `test` LIMIT 10")
 
 	if err != nil{
-		panic(err)
+		log.Fatal(err)
 	}
 
 	var texts []structs.TestStruct

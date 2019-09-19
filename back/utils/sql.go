@@ -1,10 +1,10 @@
 package utils
 
 import (
-	"database/sql"
-	"log"
 	"../structs"
+	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
+	"log"
 )
 
 var db_user = "hello"
@@ -67,4 +67,42 @@ func UserIsAuthenticated(uname, pswd string) bool {
 	}
 
 	return isAuthenticated
+}
+
+func GetArtists(limit, offset rune) []*structs.Artist {
+	db, err := sql.Open("mysql", db_user + ":" + db_password + "@/" + db_name)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	query := "SELECT * FROM `artists` LIMIT 0, 100"
+
+	// TODO: add limit and offset in query
+	limit = 100
+	offset = 0
+
+	log.Println(query)
+	artists := make([]*structs.Artist, 0)
+
+	rows, err := db.Query(query)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		artist := new(structs.Artist)
+		err := rows.Scan(&artist.Id, &artist.Name)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		artists = append(artists, artist)
+	}
+	if err = rows.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	return artists
 }

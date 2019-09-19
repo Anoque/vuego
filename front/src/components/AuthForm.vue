@@ -27,6 +27,8 @@
 </template>
 
 <script>
+  import { STORE } from '../store'
+
   export default {
     name: "AuthForm",
     props: ['is_auth'],
@@ -41,13 +43,13 @@
     }),
     methods: {
       createUser () {
-        this.$store.dispatch('createUser', {
+        STORE.dispatch('createUser', {
           username: this.username,
           password: this.password
         })
       },
       authUser() {
-        this.$store.dispatch('authUser', {
+        STORE.dispatch('authUser', {
           username: this.username,
           password: this.password
         })

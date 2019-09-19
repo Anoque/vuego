@@ -2,21 +2,36 @@
   <v-app>
     <v-toolbar app>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn>
-          <router-link to="/">
-            Home
-          </router-link>
-        </v-btn>
-        <v-btn flat v-if="!logged">
-          <router-link to="/login">
-            Log in
-          </router-link>
-        </v-btn>
-        <v-btn flat v-if="!logged">
-          <router-link to="/registration">
-            Sign up
-          </router-link>
-        </v-btn>
+        <router-link
+          to="/"
+          class="main-menu-link"
+          v-ripple>
+          Home
+        </router-link>
+
+        <router-link
+          v-if="!logged"
+          to="/login"
+          class="main-menu-link"
+          v-ripple>
+          Log in
+        </router-link>
+
+        <router-link
+          v-if="!logged"
+          to="/registration"
+          class="main-menu-link"
+          v-ripple>
+          Sign up
+        </router-link>
+
+        <span
+          v-if="logged"
+          class="main-menu-link"
+          v-ripple
+          v-on:click="logout()">
+          Logout
+        </span>
       </v-toolbar-items>
     </v-toolbar>
 
@@ -29,36 +44,20 @@
 </template>
 
 <script>
-/*function sendRequest(url, data) {
-  axios.post(
-    apiUrl + url, data, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+  import Methods from './methods'
+  import {STORE} from "./store"
+
+  export default {
+    name: 'App',
+    methods: {
+      logout: () => {
+        STORE.commit(Methods.LOGOUT)
+      }
+    },
+    computed: {
+      logged: () => {
+        return STORE.getters[Methods.GET_AUTH_STATUS]
       }
     }
-  ).then((response) => {
-    console.log("Response: ", response)
-
-    if (typeof response.error !== 'undefined') {
-      console.error(response.error)
-
-      return null
-    } else if (typeof response.result !== 'undefined') {
-      return response.result
-    }
-  }).catch((error) => {
-    console.error(error)
-
-    return null
-  })
-}*/
-
-export default {
-  name: 'App',
-  data () {
-    return {
-      logged: false
-    }
   }
-}
 </script>

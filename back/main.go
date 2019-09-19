@@ -5,6 +5,8 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/cors"
 	"log"
+
+	//"log"
 	"net/http"
 	"./utils"
 	"./structs"
@@ -14,12 +16,13 @@ func main() {
 	m := martini.Classic()
 
 	m.Use(cors.Allow(&cors.Options{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"POST", "GET", "DELETE", "PUT", "PATCH"},
-		AllowHeaders: []string{"X-Auth-Key", "X-Auth-Secret", "Content-Type"},
+		AllowAllOrigins: true,
+		AllowMethods:     []string{"GET", "POST", "DELETE", "PUT", "PATCH"},
+		//AllowHeaders: []string{"X-Auth-Key", "X-Auth-Secret", "Content-Type"},
 	}))
 
 	m.Get("/", func() string {
+		log.Print("test")
 		return controllers.GetTests()
 	})
 
@@ -42,10 +45,11 @@ func main() {
 		})
 	})
 
-	m.Run()
-}
+	m.Group("/artists", func(r martini.Router) {
+		r.Get("/list", func() string {
+			return controllers.GetArtists(100, 0)
+		})
+	})
 
-func checkSession() {
-	req := &http.Request{}
-	log.Println(req)
+	m.Run()
 }
